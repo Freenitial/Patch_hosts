@@ -1,5 +1,7 @@
-@echo off
-echo.
+@echo off & echo.
+
+:: Author  : Freenitial on GitHub
+:: version : 1.0
 
 net session >nul 2>&1 || (echo Please launch again as Admin & pause >nul & exit /b 1)
 
