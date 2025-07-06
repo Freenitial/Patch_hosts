@@ -4,17 +4,17 @@ echo.
 net session >nul 2>&1 || (echo Please launch again as Admin & pause >nul & exit /b 1)
 
 setlocal EnableDelayedExpansion
-echo --- Patching Host ---
+echo --- Patching Hosts ---
 
 :: ===== SETTINGS =====
 set "hostspath=%SystemRoot%\System32\drivers\etc\hosts"
 
 :: ===== PARSE ARGUMENTS =====
-set "undo="
+set "remove="
 set "count=0"
 for %%A in (%*) do (
-    if /i "%%~A"=="/undo" (
-        set "undo=1"
+    if /i "%%~A"=="/remove" (
+        set "remove=1"
     ) else (
         set /a count+=1
         set "site!count!=%%~A"
@@ -22,13 +22,13 @@ for %%A in (%*) do (
 )
 
 if %count%==0 (
-    echo [ERROR] Usage : %~nx0 <site1> [site2 ...] [/undo]
+    echo [ERROR] Usage : %~nx0 <site1> [site2 ...] [/remove]
     echo Example       : %~nx0 www.google.com
-    echo               : %~nx0 www.google.com www.yahoo.com /undo
+    echo               : %~nx0 www.google.com www.yahoo.com /remove
     exit /b 1
 )
 
-if defined undo (
+if defined remove (
     rem === REMOVE mappings for every requested domain, whatever the IP ===
     >"%hostspath%.tmp" (
         for /f "usebackq tokens=* delims=" %%L in ("%hostspath%") do (
